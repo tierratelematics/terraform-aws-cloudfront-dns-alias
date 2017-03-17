@@ -9,20 +9,11 @@ resource "aws_route53_zone" "PlatformHostedZone" {
 
 resource "aws_route53_record" "PlatformWebsiteRecord" {
   zone_id = "${aws_route53_zone.PlatformHostedZone.zone_id}"
-  name = "${var.alias_domain}"
-  type = "CNAME"
-  ttl = "300"
-  records = ["${var.cloudfront_url}"]
+  name = "${aws_route53_zone.PlatformHostedZone.name}"
+  type = "A"
+  alias {
+    name = "${var.cloudfront_url}"
+    zone_id = "${var.cloufront_hosted_zone_id}"
+    evaluate_target_health = false
+  }
 }
-
-//
-//resource "aws_route53_record" "PlatformWebsiteRecord" {
-//  zone_id = "${aws_route53_zone.PlatformHostedZone.zone_id}"
-//  name = "${aws_route53_zone.PlatformHostedZone.name}"
-//  type = "A"
-//  alias {
-//    name = "${var.cloudfront_url}"
-//    zone_id = "${var.cloufront_hosted_zone_id}"
-//    evaluate_target_health = false
-//  }
-//}
